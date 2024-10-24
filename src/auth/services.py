@@ -1,7 +1,7 @@
 from typing import Type
 from .models import User
 from .schemas import UserCreate
-from base import BaseService
+from core.base import BaseService
 from .utils import get_password_hash
 
 

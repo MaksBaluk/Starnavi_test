@@ -1,5 +1,7 @@
 from typing import Optional
+from fastapi import Form
 from pydantic import BaseModel, EmailStr, Field
+from fastapi.security import OAuth2PasswordRequestForm
 
 
 # Token Schemas----------------------------------------------------
@@ -43,9 +45,8 @@ class UserCreate(UserBase):
         from_attributes = True
 
 
-class Login(BaseModel):
+class Login(BaseModel, OAuth2PasswordRequestForm):
     email: EmailStr
-    password: str
 
 
 class UserProfile(BaseModel):

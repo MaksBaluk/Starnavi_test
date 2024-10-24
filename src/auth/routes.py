@@ -4,9 +4,10 @@ from .authentication import create_access_token, get_current_user, create_refres
 from .schemas import UserCreate, Token, User, Login, UserProfile
 from .services import UserService
 from .utils import verify_password
-from db import get_db
-from config import settings
+from core.db import get_db
+from core.config import settings
 from jose import JWTError, jwt
+from fastapi.security import OAuth2PasswordRequestForm
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -36,10 +37,11 @@ def register(user_data: UserCreate, db: Session = Depends(get_db)):
     return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "bearer"}
 
 
-@router.post("/token", response_model=Token)
-def login(form_data: Login = Depends(), db: Session = Depends(get_db)):
+@router.post("/token", response_model=Token,
+             description="Authorization with email and password. Use your email in the 'username' field")
+def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user_service = UserService(db)
-    user = user_service.get_user_by_email(form_data.email)
+    user = user_service.get_user_by_email(form_data.username)
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect email or password")
 

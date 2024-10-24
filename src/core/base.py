@@ -4,9 +4,9 @@ from typing import Annotated
 from datetime import datetime
 from fastapi import HTTPException
 
-created_time = Annotated[datetime, mapped_column(server_default=text("TIMEZONE('utc', now())"))]
+created_time = Annotated[datetime, mapped_column(default=datetime.utcnow())]
 updated_time = Annotated[
-    datetime, mapped_column(server_default=text("TIMEZONE('utc', now())"), onupdate=text("TIMEZONE('utc', now())"))]
+    datetime, mapped_column(default=datetime.utcnow, onupdate=datetime.utcnow)]
 
 
 class Base(DeclarativeBase):
