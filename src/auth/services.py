@@ -1,4 +1,7 @@
 from typing import Type
+
+from sqlalchemy.orm import joinedload
+
 from .models import User
 from .schemas import UserCreate
 from core.base import BaseService
@@ -30,3 +33,8 @@ class UserService(BaseService):
     def delete_user(self, user_id: int) -> None:
         user = self.get_user_by_id(user_id)
         self.delete(user)
+
+    def get_user_with_posts_and_comments(self, user_id: int) -> User:
+        user = self.db.query(User).options(joinedload(User.posts), joinedload(User.comments)).filter(
+            User.id == user_id).one_or_none()
+        return user

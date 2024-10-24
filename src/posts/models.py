@@ -13,8 +13,8 @@ class Post(Base):
     updated_at: Mapped[updated_time]
     auto_reply_enabled: Mapped[bool] = mapped_column(Boolean, default=False)
 
-    owner: Mapped["User"] = deferred(relationship("User", back_populates="posts"))
-    comments: Mapped[list['Comment']] = deferred(relationship("Comment", back_populates="post", cascade="all, delete-orphan"))
+    owner: Mapped["User"] = relationship("User", back_populates="posts")
+    comments: Mapped[list["Comment"]] = relationship("Comment", back_populates="post", cascade="all, delete-orphan")
 
 
 

@@ -13,5 +13,5 @@ class Comment(Base):
     updated_at: Mapped[updated_time]
     blocked: Mapped[bool] = mapped_column(Boolean, default=False)
 
-    post: Mapped["Post"] = deferred(relationship("Post", back_populates="comments"))
-    owner: Mapped["User"] = deferred(relationship("User", back_populates="comments"))
+    post: Mapped["Post"] = relationship("Post", back_populates="comments")
+    owner: Mapped["User"] = relationship("User", back_populates="comments")

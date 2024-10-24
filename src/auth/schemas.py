@@ -1,7 +1,10 @@
 from typing import Optional
 from fastapi import Form
 from pydantic import BaseModel, EmailStr, Field
-from fastapi.security import OAuth2PasswordRequestForm
+
+from .models import User
+from src.posts.schemas import Post
+from src.comments.schemas import Comment
 
 
 # Token Schemas----------------------------------------------------
@@ -22,20 +25,24 @@ class UserBase(BaseModel):
 
     class Config:
         from_attributes = True
+        arbitrary_types_allowed = True
 
 
 class User(UserBase):
     id: int
-    role_id: Optional[int]
-    is_active: bool
-    is_superuser: bool
-    is_verified: bool
 
-    # posts: list[Post] = []
-    # comments: list[Comment] = []
+    posts: Optional[list[Post]] = []
+    comments: Optional[list[Comment]] = []
+
+    # @classmethod
+    # def from_orm(cls, user: User):
+    #     posts = user.posts
+    #     comments = user.comments
+    #     return cls(id=user.id, username=user.username, posts=posts, comments=comments)
 
     class Config:
         from_attributes = True
+        arbitrary_types_allowed = True
 
 
 class UserCreate(UserBase):
@@ -45,21 +52,15 @@ class UserCreate(UserBase):
         from_attributes = True
 
 
-class Login(BaseModel, OAuth2PasswordRequestForm):
+class Login(BaseModel):
     email: EmailStr
 
 
 class UserProfile(BaseModel):
     username: str
 
-    # posts: list[Post] = []
+    posts: list[Post] = []
 
     class Config:
         from_attributes = True
-
-
-class Username(BaseModel):
-    username: str
-
-    class Config:
-        from_attributes = True
+        arbitrary_types_allowed = True
