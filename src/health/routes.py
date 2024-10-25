@@ -4,7 +4,7 @@ from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 from core.db import get_db
 
-router = APIRouter()
+router = APIRouter(tags=['health'])
 
 
 @router.get("/health")

@@ -15,6 +15,9 @@ class CommentService(BaseService):
     def get_comment_by_id(self, comment_id: int) -> Comment:
         return self.get_or_404(Comment, comment_id)
 
+    def get_comments_by_post_id(self, post_id: int) -> list[Type[Comment]]:
+        return self.db.query(Comment).filter(Comment.post_id == post_id).all()
+
     def get_all_comments_crud(self) -> list[Type[Comment]]:
         return self.db.query(Comment).all()
 

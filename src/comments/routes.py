@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from src.core.db import get_db
-from .services import CommentService  # Імпортуйте ваш сервіс для коментарів
-from .schemas import CommentCreate, Comment, CommentUpdate  # Імпортуйте ваші схеми для коментарів
+from .services import CommentService
+from .schemas import CommentCreate, Comment, CommentUpdate
 from auth.authentication import get_current_user
 from src.core.base import get_service, BaseService
 
