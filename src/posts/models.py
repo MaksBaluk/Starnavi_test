@@ -12,6 +12,7 @@ class Post(Base):
     created_at: Mapped[created_time]
     updated_at: Mapped[updated_time]
     auto_reply_enabled: Mapped[bool] = mapped_column(Boolean, default=False)
+    auto_reply_delay: Mapped[int] = mapped_column(default=3600)
 
     owner: Mapped["User"] = relationship("User", back_populates="posts")
     comments: Mapped[list["Comment"]] = relationship("Comment", back_populates="post", cascade="all, delete-orphan")

@@ -1,5 +1,6 @@
 from typing import Type
-
+from fastapi import HTTPException
+from utils.moderation import is_toxic_content
 from .models import Post
 from .schemas import PostCreate, PostUpdate
 from src.core.base import BaseService
@@ -7,8 +8,11 @@ from src.core.base import BaseService
 
 class PostService(BaseService):
 
-    def create_post(self, data: PostCreate, owner_id: int) -> Post:
-        new_post = Post(**data.dict(), owner_id=owner_id)
+    def create_post(self, post_data: PostCreate, owner_id: int) -> Post:
+        if is_toxic_content(post_data.content):
+            raise HTTPException(status_code=400, detail="Post contains toxic content and cannot be created.")
+
+        new_post = Post(**post_data.dict(), owner_id=owner_id)
         self.create(new_post)
         return new_post
 

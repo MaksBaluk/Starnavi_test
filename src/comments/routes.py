@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from src.core.db import get_db
@@ -56,3 +58,16 @@ def delete_comment(comment_id: int, service: CommentService = Depends(get_commen
     if comment.owner_id != current_user.id:
         raise HTTPException(status_code=403, detail="Not authorized to delete this comment")
     service.delete_comment_crud(comment_id)
+
+
+@router.get("/comments-daily-breakdown")
+def get_comments_daily_breakdown(date_from: str, date_to: str, service: CommentService = Depends(get_comment_service)):
+    try:
+        date_from = datetime.strptime(date_from, "%Y-%m-%d").date()
+        date_to = datetime.strptime(date_to, "%Y-%m-%d").date()
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD.")
+
+    results = service.get_comments_daily_breakdown(date_from, date_to)
+
+    return results
