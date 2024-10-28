@@ -19,6 +19,7 @@ alembic = "^1.13.3"
 python-multipart = "^0.0.12"
 requests = "^2.32.3"
 google-cloud-language = "^2.15.0"
+pytest = "^8.3.3"
 
 
 [build-system]
